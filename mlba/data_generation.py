@@ -2,11 +2,25 @@ import numpy as np
 from pymlba import predict
 import pandas as pd
 
-seed = 1234
+from argparse import ArgumentParser
+
+parser = ArgumentParser()
+
+parser.add_argument('--seed', type=int, default=1234,
+                    help='seed for data generation (default: %(default)s)')
+
+parser.add_argument('-N', type=int, default=20000,
+                    help='sample size to be generated (default: %(default)s)')
+
+
+
+args = parser.parse_args()
+
+N = args.N
+seed = args.seed
 
 np.random.seed(seed)
 
-N=20000
 
 D = np.random.uniform(1.,9., size= N*2).reshape(-1,2)
 X = np.tile([4.,6.],[D.shape[0],1])

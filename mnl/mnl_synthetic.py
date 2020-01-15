@@ -10,6 +10,19 @@ import pandas as pd
 import numpy as np
 from larch.roles import PX
 
+from argparse import ArgumentParser
+
+parser = ArgumentParser()
+
+parser.add_argument('--trainset', type=str, default=None,
+                    help='testset `csv file (default: %(default)s)')
+
+parser.add_argument('--testset', type=str, default=None,
+                    help='testset pickle file (default: %(default)s)')
+
+
+args = parser.parse_args()
+
 def aic(loglike,nparams):
     return 2*nparams-2*loglike
 
@@ -34,8 +47,7 @@ indiv_col = 'indiv'
 alt_col = 'alt'
 choice_col = 'choice'
 
-d = larch.DB.CSV_idca('C:\\Users\\alheritier\\OneDrive - Amadeus Workplace\\myPapers\\relativeChoiceModeling\\synthetic experiment\\generated_N20000_seed1234.csv', 
-                       caseid=indiv_col, altid=alt_col, choice=choice_col, tablename="train")
+d = larch.DB.CSV_idca(args.trainset,caseid=indiv_col, altid=alt_col, choice=choice_col, tablename="train")
 
 
 
@@ -48,7 +60,7 @@ m = fitModel(d,vars)
 
 #%%
 
-data_test = pd.read_pickle('C:\\Users\\alheritier\\OneDrive - Amadeus Workplace\\myPapers\\relativeChoiceModeling\\synthetic experiment\\generated_N10000_seed5678.bz2')
+data_test = pd.read_pickle(args.testset)
 
 #%%
 coef=[m[var].value for var in vars]
@@ -99,7 +111,7 @@ import scipy.stats
 def conditionalKL(df,probcol):
     return df.groupby('indiv').apply(lambda x: scipy.stats.entropy(x["true_prob"].values,x[probcol].values)).mean()
 
-conditionalKL(data_test,"choice_prob")
+print("KL: ", conditionalKL(data_test,"choice_prob"))
 
 
 #%%
@@ -130,14 +142,6 @@ from pylab import imshow, text, plot, savefig, scatter
 import matplotlib
 matplotlib.use('Agg')
 
-#plot([1, 9], [9, 1], '--', color="w", lw=1, zorder=5)
-#scatter([4,6,3,2,3.5], [6,4,5,8,6.5], marker =".", color="k", zorder=10)
-#
-#text(4,6,"$a$")
-#text(6,4,"$b$")
-#text(3,5,"$c_A$")
-#text(2,8,"$c_C$")
-#text(3.5,6.5,"$c_S$")
 import matplotlib.pyplot as plt
 plt.clf()
 
