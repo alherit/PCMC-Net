@@ -5,6 +5,14 @@ Everything runs on Python 3 except the original PCMC model on Python 2.
 
 ## Experiment 1
 
+Requirements:
+pandas
+matplotlib
+numpy
+scikit-learn
+PyTorch >= 1.1
+
+
 Data generation requires mlba.hpp and mlba.cpp (in mlba folder) from https://github.com/tkngch/choice-models/tree/master/mlba and GSL, Eigen and C++11 to be installed. Pybind11 files should be obtained from Then, do: 
 cd mlba
 git clone https://github.com/pybind/pybind11.git
@@ -23,7 +31,7 @@ cd mnl
 pip install larch
 python mnl_synthetic.py --trainset ../mlba/generated_N20000_seed1234.csv --testset ../mlba/generated_N10000_seed5678.bz2
 
-To run the original PCMC (requires pcmc_utils.py from https://github.com/sragain/pcmc-nips in PYTHONPATH and Python 2):
+To run the original PCMC (requires pcmc_utils.py from https://github.com/sragain/pcmc-nips in PYTHONPATH and Python 2)(Note that the SQLSP optimizer is prone to numerical instabilities yielding reproducibility issues: see https://github.com/scipy/scipy/issues/8677):
 python pcmc-orig-synthetic.py --trainset generated_N20000_seed1234.bz2 --testset generated_N10000_seed5678.bz2
 
 PCMC-Net:

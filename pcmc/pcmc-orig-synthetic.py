@@ -10,6 +10,7 @@ Created on Tue Nov 12 14:08:51 2019
 
 import pickle
 
+import os
 
 import pandas as pd
 import numpy as np
@@ -84,9 +85,11 @@ maxiter = 25 # default value in pcmc-nips code
 
 pcmc_params = infer(C=Ctrain,x=None,n=nbins*nbins+2,maxiter=maxiter,delta=1)
 
-pickle.dump(pcmc_params,open("pcmc_N10000_params_nbins"+str(nbins)+".p", "wb"))
+pickle_file = os.path.basename(os.path.normpath(fname))+"_pcmc_params_nbins"+str(nbins)+".p"
 
-pcmc_params =pickle.load(open("pcmc_N10000_params_nbins"+str(nbins)+".p", "rb"))
+pickle.dump(pcmc_params,open("pcmc_params_nbins"+str(nbins)+".p", "wb"))
+
+pcmc_params =pickle.load(open("pcmc_params_nbins"+str(nbins)+".p", "rb"))
 
 fname = args.testset
 print(fname)
@@ -115,17 +118,6 @@ def getProb2(third, nbins):
     return solve_ctmc(Q[x,:][:,x])    
 
 
-#plot empirical distribution discretized
-d = { (i/nbins,i%nbins):v for (_,_,i),v in Ctrain.items()}
-prob_emp = np.stack([d[k] for k in sorted(d.keys())])
-prefX = prob_emp [:,0] /(prob_emp [:,0] + prob_emp [:,1])
-
-from pylab import imsave
-
-Z = prefX.reshape(int(round(np.sqrt(len(prefX)))),-1).T
-
-im = imsave("empirical_N20000_nbins"+str(nbins)+".pdf",Z,cmap='gray', vmin=0., vmax=1., origin="lower")
-
 
 #Figure 2
 D = np.mgrid[1:9:.1, 1:9:.1].reshape(2, -1).T
@@ -142,13 +134,13 @@ from pylab import imsave, imshow, savefig
 
 Z = prefX.reshape(int(round(np.sqrt(len(prefX)))),-1).T
 
-im = imsave("pcmc-orig_N20000_nbins"+str(nbins)+".pdf",Z,cmap='gray', vmin=0., vmax=1., origin="lower")
+im = imsave("pcmc-orig_nbins"+str(nbins)+".pdf",Z,cmap='gray', vmin=0., vmax=1., origin="lower")
 
 import matplotlib.pyplot as plt
 plt.clf()
 
 plt.xticks(np.arange(1,10,1))
 im = imshow(Z,cmap='gray', vmin=0., vmax=1., origin="lower", extent=[1,9,1,9])
-savefig("pcmc-orig_N20000_nbins"+str(nbins)+"_decorated.pdf",bbox_inches='tight')
+savefig("pcmc-orig_nbins"+str(nbins)+"_decorated.pdf",bbox_inches='tight')
 
 
