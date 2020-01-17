@@ -8,12 +8,14 @@ Created on Tue Nov 12 14:08:51 2019
 # python 2
 # requires pcmc-nips\\lib from https://github.com/sragain/pcmc-nips in PYTHONPATH
 
+import numpy as np
+
+
 import pickle
 
 import os
 
 import pandas as pd
-import numpy as np
 from pcmc_utils import infer,solve_ctmc, comp_Q
 
 from argparse import ArgumentParser
@@ -26,9 +28,13 @@ parser.add_argument('--trainset', type=str, default=None,
 parser.add_argument('--testset', type=str, default=None,
                     help='testset pickle file (default: %(default)s)')
 
+parser.add_argument('--seed', type=int, default=None,
+                    help='seed (default: %(default)s)')
+
 
 args = parser.parse_args()
 
+np.random.seed(args.seed)
 
 
 fname = args.trainset
@@ -83,13 +89,14 @@ maxiter = 25 # default value in pcmc-nips code
 # discretize third option
 
 
+
 pcmc_params = infer(C=Ctrain,x=None,n=nbins*nbins+2,maxiter=maxiter,delta=1)
 
-pickle_file = os.path.basename(os.path.normpath(fname))+"_pcmc_params_nbins"+str(nbins)+".p"
+pickle_file = os.path.basename(os.path.normpath(fname))+"_pcmc_params_nbins"+str(nbins)+"_seed"+str(args.seed)+".p"
 
-pickle.dump(pcmc_params,open("pcmc_params_nbins"+str(nbins)+".p", "wb"))
+pickle.dump(pcmc_params,open(pickle_file, "wb"))
 
-pcmc_params =pickle.load(open("pcmc_params_nbins"+str(nbins)+".p", "rb"))
+pcmc_params =pickle.load(open(pickle_file, "rb"))
 
 fname = args.testset
 print(fname)
@@ -106,7 +113,7 @@ def getProb(group,nbins):
 
 import scipy.stats
 
-print "kl div nbins "+str(nbins)+" wrt True model" , testset.groupby('indiv').apply(lambda x: scipy.stats.entropy(x["true_prob"].values,getProb(x,nbins))).mean()
+print "kl div nbins "+str(nbins)+" seed "+str(args.seed)+" wrt True model" , testset.groupby('indiv').apply(lambda x: scipy.stats.entropy(x["true_prob"].values,getProb(x,nbins))).mean()
 
 def encode2(x,nbins):
     bins = np.linspace(1, 9, num=nbins+1)
@@ -129,18 +136,20 @@ probs = np.apply_along_axis(lambda r:getProb2(r,nbins), 1, D)
 
 prefX = probs[:,0] /(probs[:,0] + probs[:,1])
 
+import matplotlib as mpl
+mpl.use('Agg')
 
 from pylab import imsave, imshow, savefig
 
 Z = prefX.reshape(int(round(np.sqrt(len(prefX)))),-1).T
 
-im = imsave("pcmc-orig_nbins"+str(nbins)+".pdf",Z,cmap='gray', vmin=0., vmax=1., origin="lower")
+im = imsave("pcmc-orig_nbins"+str(nbins)+"_seed"+str(args.seed)+".pdf",Z,cmap='gray', vmin=0., vmax=1., origin="lower")
 
 import matplotlib.pyplot as plt
 plt.clf()
 
 plt.xticks(np.arange(1,10,1))
 im = imshow(Z,cmap='gray', vmin=0., vmax=1., origin="lower", extent=[1,9,1,9])
-savefig("pcmc-orig_nbins"+str(nbins)+"_decorated.pdf",bbox_inches='tight')
+savefig("pcmc-orig_nbins"+str(nbins)+"_seed"+str(args.seed)+"_decorated.pdf",bbox_inches='tight')
 
 

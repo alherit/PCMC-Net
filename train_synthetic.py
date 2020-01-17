@@ -57,8 +57,6 @@ class Trainer():
     def load_data(self,fname):
         print(fname)
         learnset = pd.read_pickle(fname)
-        if os.name == 'nt':
-            learnset = learnset[:99]
 
         #normalize
         learnset[self.alt_num_features] = (learnset[self.alt_num_features] - 1.)/8. 
@@ -140,10 +138,7 @@ class Trainer():
         
         #######
         
-        if os.name == 'nt':
-            num_workers = 0
-        else:
-            num_workers = self.num_workers
+        num_workers = self.num_workers
 
         
     
@@ -267,10 +262,8 @@ if __name__ == "__main__":
 
     
 
-    #parser.add_argument('--data_folder', type=str, default="~/data/choice/",
-    #                    help='folder containing data (default: %(default)s)')
 
-    parser.add_argument('--fname', type=str, default="~/data/choice/generated_N10000_seed1234.bz2",
+    parser.add_argument('--fname', type=str, default=None,
                         help='data filename (default: %(default)s)')
 
                         
