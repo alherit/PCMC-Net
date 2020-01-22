@@ -1,9 +1,5 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Nov 12 14:08:51 2019
-
-@author: alheritier
-"""
+# (c) 2020 alherit
+# This code is licensed under MIT license (see LICENSE.txt for details)
 
 # python 2
 # requires pcmc-nips\\lib from https://github.com/sragain/pcmc-nips in PYTHONPATH
@@ -84,7 +80,7 @@ Ctrain = build_Cset(trainset,alpha,nbins)
 
 #x: starting parameters
 #maxiter- number of iterations allowed to optimizer
-maxiter = 25 # default value in pcmc-nips code
+maxiter = 50 #25 is the default in pcmc-nips code
 #n- number of elements in universe
 # discretize third option
 

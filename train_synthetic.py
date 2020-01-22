@@ -1,11 +1,7 @@
-# -*- coding: utf-8 -*-
+# (c) 2020 alherit
+# This code is licensed under MIT license (see LICENSE.txt for details)
 
 # experiments were run with Python 3.6, PyTorch 1.1.0, Linux CUDA 9.0
-
-
-
-### results of the paper were obtained with:
-# python train_synthetic.py --batch_size 16 --activation 3 --lr .001 --hidden_layers 1 --nodes_per_layer 512 --dropout 0.2 --fname ../mlba/generated_N20000_seed1234.bz2 --max_epochs 11 --final 
 
 
 import torch
@@ -333,11 +329,9 @@ if __name__ == "__main__":
                {'name': 'hidden_layers', 'type': 'discrete', 'domain': to_enum(args.opt_hid_lay)},
                {'name': 'nodes_per_layer_power_2', 'type': 'discrete', 'domain': to_enum(args.opt_nodes_p2)},
                {'name': 'batch_size_pow_2', 'type': 'discrete', 'domain': to_enum(args.opt_bsize_p2)},
-               {'name': 'activation', 'type': 'discrete', 'domain': to_enum((0,3))},
-               {'name': 'dropout', 'type': 'continuous', 'domain': tuple(args.opt_dropout)}]
+               {'name': 'activation', 'type': 'discrete', 'domain': to_enum((0,3))}]
                 
         
-
         print(bds)
         print("max_iter: ",args.opt_max_iter )
         sys.stdout.flush()
@@ -347,10 +341,8 @@ if __name__ == "__main__":
             params = params[0]
             print("evaluating config: ",params)
 
-            res =  t.run(index=fun.index, lr=10**-float(params[0]), dropout=float(params[5]), hidden_layers=int(params[1]),nodes_per_layer=int(2**params[2]), max_epochs=args.max_epochs,
+            res =  t.run(index=fun.index, lr=10**-float(params[0]), dropout=0., hidden_layers=int(params[1]),nodes_per_layer=int(2**params[2]), max_epochs=args.max_epochs,
                          train_batch_size=2**int(params[3]), activation=int(params[4]), dev_batch_size=args.dev_batch_size,sig_imp=args.sig_imp,patience=args.patience)
-            #res =  t.run(index=fun.index, lr=10**-float(params[0]), dropout=.5, hidden_layers=int(params[1]),nodes_per_layer=int(2**params[2]), max_epochs=args.max_epochs,
-            #             train_batch_size=2**int(params[3]), activation=int(params[4]), dev_batch_size=args.dev_batch_size,sig_imp=args.sig_imp,patience=args.patience)
             print("dev loss: ",res)
             return res
         fun.index = 0

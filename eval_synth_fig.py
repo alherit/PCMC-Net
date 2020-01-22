@@ -1,3 +1,6 @@
+# (c) 2020 alherit
+# This code is licensed under MIT license (see LICENSE.txt for details)
+
 import numpy as np
 import pandas as pd
 from tqdm import tqdm

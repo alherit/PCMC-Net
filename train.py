@@ -1,12 +1,7 @@
-# -*- coding: utf-8 -*-
+# (c) 2020 alherit
+# This code is licensed under MIT license (see LICENSE.txt for details)
 
 # experiments were run with Python 3.6, PyTorch 1.1.0, Linux CUDA 9.0
-
-
-### data was obtained from : Mottini, Alejandro, and Rodrigo Acuna-Agost. "Deep choice model using pointer networks for airline itinerary prediction." Proceedings of the 23rd ACM SIGKDD International Conference on Knowledge Discovery and Data Mining. ACM, 2017. 
-### results of the paper were obtained with:
-### python train.py  --batch_size  16 --activation 3  --lr .001 --hidden_layers 2 --nodes_per_layer 512 --final  --max_epochs 66  
-### python eval_test.py --batch_size 16 --model models/pcmcNet_device~cuda_patience~5_sig_imp~0.01_dev_batch_size~8_activation~3_train_batch_size~16_max_epochs~66_hidden_layers~2_lr~0.001_index~0_nodes_per_layer~512_dropout~0.5.pth 
 
 
 import torch

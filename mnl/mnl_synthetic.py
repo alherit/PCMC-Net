@@ -1,9 +1,5 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Nov 12 12:17:45 2019
-
-@author: alheritier
-"""
+# (c) 2020 alherit
+# This code is licensed under MIT license (see LICENSE.txt for details)
 
 import larch
 import pandas as pd
