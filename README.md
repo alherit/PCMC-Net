@@ -57,12 +57,14 @@ PCMC-Net:
 mkdir exp1-pcmcnet
 cd exp1-pcmcnet
 # training
-python ../train_synthetic.py --batch_size 1 --activation 3 --lr .001 --hidden_layers 1 --nodes_per_layer 16 --dropout 0. --max_epochs 100 --final  --fname ../mlba/generated_N20000_seed1234.bz2 
 # KL evaluation
-python ../eval_synthetic.py --testset ../mlba/generated_N10000_seed5678.bz2 --model models/pcmcNet_device~cuda_patience~5_sig_imp~0.01_dev_batch_size~8_activation~3_train_batch_size~1_max_epochs~100_hidden_layers~1_lr~0.001_index~0_nodes_per_layer~16_dropout~0.0.pth  --batch_size 1024
 # figure generation
-python ../eval_synth_fig.py --model models/pcmcNet_device~cuda_patience~5_sig_imp~0.01_dev_batch_size~8_activation~3_train_batch_size~1_max_epochs~100_hidden_l
-ayers~1_lr~0.001_index~0_nodes_per_layer~16_dropout~0.0.pth  --batch_size 1024
+for h in {1..3}; do \
+	python ../train_synthetic.py --batch_size 1 --activation 3 --lr .001 --hidden_layers $h --nodes_per_layer 16 --dropout 0. --max_epochs 100 --final  --fname ../mlba/generated_N20000_seed1234.bz2 ;\
+	python ../eval_synthetic.py --testset ../mlba/generated_N10000_seed5678.bz2 --model models/pcmcNet_device~cuda_patience~5_sig_imp~0.01_dev_batch_size~8_activation~3_train_batch_size~1_max_epochs~100_hidden_layers~${h}_lr~0.001_index~0_nodes_per_layer~16_dropout~0.0.pth  --batch_size 1024 ;\
+	python ../eval_synth_fig.py --model models/pcmcNet_device~cuda_patience~5_sig_imp~0.01_dev_batch_size~8_activation~3_train_batch_size~1_max_epochs~100_hidden_layers~${h}_lr~0.001_index~0_nodes_per_layer~16_dropout~0.0.pth  --batch_size 1024 ;\
+done 
+
 cd ..
 ```
 
