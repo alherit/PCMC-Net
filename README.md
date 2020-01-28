@@ -17,7 +17,7 @@ Requirements:
 * PyTorch >= 1.1
 
 Synthetic data is included in the mlba folder.
-For regenerating it, you need mlba.hpp and mlba.cpp (in the mlba folder) from https://github.com/tkngch/choice-models/tree/master/mlba and GSL, Eigen and C++11 to be installed. Then do: 
+For regenerating it, you need mlba.hpp and mlba.cpp (in the mlba folder) from https://github.com/tkngch/choice-models/tree/master/mlba and GSL, Eigen and C++11 installed. Then do: 
 ```
 cd mlba
 git clone https://github.com/pybind/pybind11.git
@@ -30,9 +30,11 @@ python data_generation.py --seed 5678 -N 10000
 cd ..
 ```
 
-Figure 2 plot:
+Figure 2(i) plot:
 ```
+cd mlba
 python figure2i.py
+cd ..
 ``` 
 
 MNL: requires larch (https://pypi.org/project/larch/)
